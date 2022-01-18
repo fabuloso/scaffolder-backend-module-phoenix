@@ -1,0 +1,37 @@
+{
+  "name": "scaffolder-backend-module-phoenix",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "backstage-cli backend:build",
+    "start": "backstage-cli backend:dev",
+    "lint": "backstage-cli lint",
+    "test": "backstage-cli test",
+    "prepack": "backstage-cli prepack",
+    "postpack": "backstage-cli postpack",
+    "clean": "backstage-cli clean"
+  },
+  "dependencies": {
+    "@backstage/backend-common": "^0.10.3",
+    "@backstage/plugin-scaffolder-backend": "^0.15.20",
+    "@backstage/config": "^0.1.12",
+    "@backstage/errors": "^0.2.0",
+    "@backstage/integration": "^0.7.1",
+    "@backstage/types": "^0.1.1",
+    "command-exists": "^1.2.9",
+    "fs-extra": "^9.0.0"
+  },
+  "devDependencies": {
+    "@backstage/cli": "^0.11.0",
+    "@types/jest": "^26.0.7",
+    "@types/node": "^14.14.32",
+    "@types/command-exists": "^1.2.0",
+    "@types/fs-extra": "^9.0.1",
+    "@types/mock-fs": "^4.13.0",
+    "jest-when": "^3.1.0",
+    "mock-fs": "^5.1.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
