@@ -2,7 +2,8 @@
   "name": "scaffolder-backend-module-phoenix",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "build": "backstage-cli backend:build",
     "start": "backstage-cli backend:dev",
