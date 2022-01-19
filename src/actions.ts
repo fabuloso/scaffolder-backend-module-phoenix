@@ -26,6 +26,46 @@ export const createNewFileAction = () => {
                                 title: 'Ecto',
                                 description: 'Generate ecto files',
                                 type: 'boolean'
+                            },
+                            html: {
+                                title: 'Html',
+                                description: 'Generate html files',
+                                type: 'boolean'
+                            },
+                            live: {
+                                title: 'Live',
+                                description: 'If false, comment out LiveView socket setup in assets/js/app.js and also on the endpoint (the latter also requires dashboard as false)',
+                                type: 'boolean'
+                            },
+                            base_module: {
+                                title: 'Base Module',
+                                description: 'The name of the base module in the generated skeleton',
+                                type: 'string'
+                            },
+                            umbrella: {
+                                title: 'Umbrella',
+                                description: 'Generate an umbrella project, with one application for your domain, and a second application for the web interface',
+                                type: 'boolean'
+                            },
+                            database: {
+                                title: 'Database',
+                                description: 'The database adapter for ecto',
+                                type: 'string'
+                            },
+                            gettext: {
+                                title: 'GetText',
+                                description: 'If false do not generate text files',
+                                type: 'boolean'
+                            },
+                            mailer: {
+                                title: 'Mailer',
+                                description: 'If false do not generate any swoosh mailer file',
+                                type: 'boolean'
+                            },
+                            dashboard: {
+                                title: 'Dashboard',
+                                description: 'If false do not include Phoenix.LiveDashboard',
+                                type: 'boolean'
                             }
                         }
                     }
@@ -40,13 +80,46 @@ export const createNewFileAction = () => {
     async function createNewProject(ctx: any) {
         const workDir = await ctx.createTemporaryDirectory();
         const resultDir = resolvePath(workDir, 'result');
-        const {ecto} = ctx.input.values;
+        const {ecto, html, live, gettext, dashboard, mailer, database, umbrella, base_module} = ctx.input.values;
 
         let flags = ['--no-install'];
 
         if (ecto === false) {
-            ctx.logger.info("Running with no ecto");
             flags.push('--no-ecto');
+        }
+
+        if (html === false) {
+            flags.push('--no-html');
+        }
+
+        if (live === false) {
+            flags.push('--no-live');
+        }
+
+        if (gettext === false) {
+            flags.push('--no-gettext');
+        }
+
+        if (dashboard === false) {
+            flags.push('--no-dashboard');
+        }
+
+        if (mailer === false) {
+            flags.push('--no-mailer');
+        }
+
+        if (database != null) {
+            flags.push('--database')
+            flags.push(database)
+        }
+
+        if (base_module != null) {
+            flags.push('--base_module')
+            flags.push(base_module)
+        }
+
+        if (umbrella) {
+            flags.push('--no-umbrella');
         }
 
         ctx.logger.info(`Running mix phx.new with flags ${JSON.stringify(flags)}`);

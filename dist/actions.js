@@ -75,6 +75,46 @@ var createNewFileAction = function () {
                                 title: 'Ecto',
                                 description: 'Generate ecto files',
                                 type: 'boolean'
+                            },
+                            html: {
+                                title: 'Html',
+                                description: 'Generate html files',
+                                type: 'boolean'
+                            },
+                            live: {
+                                title: 'Live',
+                                description: 'If false, comment out LiveView socket setup in assets/js/app.js and also on the endpoint (the latter also requires dashboard as false)',
+                                type: 'boolean'
+                            },
+                            base_module: {
+                                title: 'Base Module',
+                                description: 'The name of the base module in the generated skeleton',
+                                type: 'string'
+                            },
+                            umbrella: {
+                                title: 'Umbrella',
+                                description: 'Generate an umbrella project, with one application for your domain, and a second application for the web interface',
+                                type: 'boolean'
+                            },
+                            database: {
+                                title: 'Database',
+                                description: 'The database adapter for ecto',
+                                type: 'string'
+                            },
+                            gettext: {
+                                title: 'GetText',
+                                description: 'If false do not generate text files',
+                                type: 'boolean'
+                            },
+                            mailer: {
+                                title: 'Mailer',
+                                description: 'If false do not generate any swoosh mailer file',
+                                type: 'boolean'
+                            },
+                            dashboard: {
+                                title: 'Dashboard',
+                                description: 'If false do not include Phoenix.LiveDashboard',
+                                type: 'boolean'
                             }
                         }
                     }
@@ -97,18 +137,43 @@ var createNewFileAction = function () {
     function createNewProject(ctx) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var workDir, resultDir, ecto, flags, targetPath, outputPath;
-            return __generator(this, function (_b) {
-                switch (_b.label) {
+            var workDir, resultDir, _b, ecto, html, live, gettext, dashboard, mailer, database, umbrella, base_module, flags, targetPath, outputPath;
+            return __generator(this, function (_c) {
+                switch (_c.label) {
                     case 0: return [4 /*yield*/, ctx.createTemporaryDirectory()];
                     case 1:
-                        workDir = _b.sent();
+                        workDir = _c.sent();
                         resultDir = (0, path_1.resolve)(workDir, 'result');
-                        ecto = ctx.input.values.ecto;
+                        _b = ctx.input.values, ecto = _b.ecto, html = _b.html, live = _b.live, gettext = _b.gettext, dashboard = _b.dashboard, mailer = _b.mailer, database = _b.database, umbrella = _b.umbrella, base_module = _b.base_module;
                         flags = ['--no-install'];
                         if (ecto === false) {
-                            ctx.logger.info("Running with no ecto");
                             flags.push('--no-ecto');
+                        }
+                        if (html === false) {
+                            flags.push('--no-html');
+                        }
+                        if (live === false) {
+                            flags.push('--no-live');
+                        }
+                        if (gettext === false) {
+                            flags.push('--no-gettext');
+                        }
+                        if (dashboard === false) {
+                            flags.push('--no-dashboard');
+                        }
+                        if (mailer === false) {
+                            flags.push('--no-mailer');
+                        }
+                        if (database != null) {
+                            flags.push('--database');
+                            flags.push(database);
+                        }
+                        if (base_module != null) {
+                            flags.push('--base_module');
+                            flags.push(base_module);
+                        }
+                        if (umbrella) {
+                            flags.push('--no-umbrella');
                         }
                         ctx.logger.info("Running mix phx.new with flags " + JSON.stringify(flags));
                         return [4 /*yield*/, (0, plugin_scaffolder_backend_1.runCommand)({
@@ -117,7 +182,7 @@ var createNewFileAction = function () {
                                 logStream: ctx.logStream,
                             })];
                     case 2:
-                        _b.sent();
+                        _c.sent();
                         targetPath = (_a = ctx.input.targetPath) !== null && _a !== void 0 ? _a : './';
                         outputPath = (0, path_1.resolve)(ctx.workspacePath, targetPath);
                         if (!outputPath.startsWith(ctx.workspacePath)) {
@@ -125,7 +190,7 @@ var createNewFileAction = function () {
                         }
                         return [4 /*yield*/, fs_extra_1.default.copy((0, path_1.join)(resultDir, ctx.input.projectName), outputPath)];
                     case 3:
-                        _b.sent();
+                        _c.sent();
                         return [2 /*return*/];
                 }
             });
