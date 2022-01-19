@@ -16,6 +16,18 @@ export const createNewFileAction = () => {
                         title: 'Project Name',
                         description: 'Project Name',
                     },
+                    values: {
+                        title: 'Template values',
+                        description: 'Values to pass on to phoenix generator for scaffolding',
+                        type: 'object',
+                        properties: {
+                            ecto: {
+                                title: 'Ecto',
+                                description: 'Generate ecto files',
+                                type: 'boolean'
+                            }
+                        }
+                    }
                 },
             },
         },
@@ -28,9 +40,18 @@ export const createNewFileAction = () => {
         const workDir = await ctx.createTemporaryDirectory();
         const resultDir = resolvePath(workDir, 'result');
 
+        let flags = ['--no-install'];
+
+
+        if (ctx.input.values.ecto === false) {
+            ctx.logger.info("Running with no ecto");
+            flags.push('--no-ecto');
+        }
+
+        ctx.logger.info(`Running mix phx.new with flags ${JSON.stringify(flags)}`);
         await runCommand({
             command: 'mix',
-            args: ['phx.new', '--no-install', join(resultDir, ctx.input.projectName)],
+            args: ['phx.new', ...flags, join(resultDir, ctx.input.projectName)],
             logStream: ctx.logStream,
         });
 
