@@ -104,7 +104,7 @@ var createNewFileAction = function () {
                     case 1:
                         workDir = _b.sent();
                         resultDir = (0, path_1.resolve)(workDir, 'result');
-                        ctx.logger.info(JSON.stringify(ctx.input.values));
+                        ctx.logger.info(JSON.stringify(ctx.input));
                         ecto = ctx.input.values.ecto;
                         flags = ['--no-install'];
                         if (ecto === false) {
