@@ -1,10 +1,11 @@
 import { createTemplateAction, runCommand } from '@backstage/plugin-scaffolder-backend';
+import { JsonObject } from '@backstage/types';
 import fs from 'fs-extra';
 import { resolve as resolvePath, join } from 'path';
 import { InputError } from '@backstage/errors';
 
 export const createNewFileAction = () => {
-    return createTemplateAction<{ projectName: string }>({
+    return createTemplateAction<{ projectName: string, values: JsonObject }>({
         id: 'elixir:create-phoenix-project',
         schema: {
             input: {
@@ -39,8 +40,6 @@ export const createNewFileAction = () => {
     async function createNewProject(ctx: any) {
         const workDir = await ctx.createTemporaryDirectory();
         const resultDir = resolvePath(workDir, 'result');
-
-        ctx.logger.info(JSON.stringify(ctx.input.values));
 
         const {ecto} = ctx.input.values;
 
