@@ -40,7 +40,7 @@ export const createNewFileAction = () => {
     async function createNewProject(ctx: any) {
         const workDir = await ctx.createTemporaryDirectory();
         const resultDir = resolvePath(workDir, 'result');
-        ctx.logger.info(JSON.stringify(ctx));
+        ctx.logger.info(JSON.stringify(ctx.input.values));
         const {ecto} = ctx.input.values;
 
         let flags = ['--no-install'];
