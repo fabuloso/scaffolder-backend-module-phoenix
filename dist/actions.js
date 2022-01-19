@@ -52,7 +52,7 @@ var createNewFileAction = function () {
                 required: ['projectName'],
                 type: 'object',
                 properties: {
-                    contents: {
+                    projectName: {
                         type: 'string',
                         title: 'Project Name',
                         description: 'Project Name',
@@ -85,7 +85,7 @@ var createNewFileAction = function () {
                         resultDir = (0, path_1.resolve)(workDir, 'result');
                         return [4 /*yield*/, (0, plugin_scaffolder_backend_1.runCommand)({
                                 command: 'mix',
-                                args: ['phx.new', '--no-install', (0, path_1.join)(resultDir, 'lauro')],
+                                args: ['phx.new', '--no-install', (0, path_1.join)(resultDir, ctx.input.projectName)],
                                 logStream: ctx.logStream,
                             })];
                     case 2:
@@ -95,7 +95,7 @@ var createNewFileAction = function () {
                         if (!outputPath.startsWith(ctx.workspacePath)) {
                             throw new errors_1.InputError("Fetch action targetPath may not specify a path outside the working directory");
                         }
-                        return [4 /*yield*/, fs_extra_1.default.copy((0, path_1.join)(resultDir, 'lauro'), outputPath)];
+                        return [4 /*yield*/, fs_extra_1.default.copy((0, path_1.join)(resultDir, ctx.input.projectName), outputPath)];
                     case 3:
                         _b.sent();
                         return [2 /*return*/];

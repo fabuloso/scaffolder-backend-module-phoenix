@@ -11,7 +11,7 @@ export const createNewFileAction = () => {
                 required: ['projectName'],
                 type: 'object',
                 properties: {
-                    contents: {
+                    projectName: {
                         type: 'string',
                         title: 'Project Name',
                         description: 'Project Name',
@@ -30,7 +30,7 @@ export const createNewFileAction = () => {
 
         await runCommand({
             command: 'mix',
-            args: ['phx.new', '--no-install', join(resultDir, 'lauro')],
+            args: ['phx.new', '--no-install', join(resultDir, ctx.input.projectName)],
             logStream: ctx.logStream,
         });
 
@@ -41,6 +41,6 @@ export const createNewFileAction = () => {
                 `Fetch action targetPath may not specify a path outside the working directory`,
             );
         }
-        await fs.copy(join(resultDir, 'lauro'), outputPath);
+        await fs.copy(join(resultDir, ctx.input.projectName), outputPath);
     }
 };
