@@ -35,6 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -57,6 +66,18 @@ var createNewFileAction = function () {
                         title: 'Project Name',
                         description: 'Project Name',
                     },
+                    values: {
+                        title: 'Template values',
+                        description: 'Values to pass on to phoenix generator for scaffolding',
+                        type: 'object',
+                        properties: {
+                            ecto: {
+                                title: 'Ecto',
+                                description: 'Generate ecto files',
+                                type: 'boolean'
+                            }
+                        }
+                    }
                 },
             },
         },
@@ -76,16 +97,22 @@ var createNewFileAction = function () {
     function createNewProject(ctx) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var workDir, resultDir, targetPath, outputPath;
+            var workDir, resultDir, flags, targetPath, outputPath;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, ctx.createTemporaryDirectory()];
                     case 1:
                         workDir = _b.sent();
                         resultDir = (0, path_1.resolve)(workDir, 'result');
+                        flags = ['--no-install'];
+                        if (ctx.input.values.ecto === false) {
+                            ctx.logger.info("Running with no ecto");
+                            flags.push('--no-ecto');
+                        }
+                        ctx.logger.info("Running mix phx.new with flags " + JSON.stringify(flags));
                         return [4 /*yield*/, (0, plugin_scaffolder_backend_1.runCommand)({
                                 command: 'mix',
-                                args: ['phx.new', '--no-install', (0, path_1.join)(resultDir, ctx.input.projectName)],
+                                args: __spreadArray(__spreadArray(['phx.new'], flags, true), [(0, path_1.join)(resultDir, ctx.input.projectName)], false),
                                 logStream: ctx.logStream,
                             })];
                     case 2:
