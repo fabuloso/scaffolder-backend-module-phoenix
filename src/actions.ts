@@ -40,10 +40,13 @@ export const createNewFileAction = () => {
         const workDir = await ctx.createTemporaryDirectory();
         const resultDir = resolvePath(workDir, 'result');
 
+        ctx.logger.info(JSON.stringify(ctx.input.values));
+
+        const {ecto} = ctx.input.values;
+
         let flags = ['--no-install'];
 
-
-        if (ctx.input.values.ecto === false) {
+        if (ecto === false) {
             ctx.logger.info("Running with no ecto");
             flags.push('--no-ecto');
         }

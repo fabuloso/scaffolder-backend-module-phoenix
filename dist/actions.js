@@ -97,15 +97,17 @@ var createNewFileAction = function () {
     function createNewProject(ctx) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var workDir, resultDir, flags, targetPath, outputPath;
+            var workDir, resultDir, ecto, flags, targetPath, outputPath;
             return __generator(this, function (_b) {
                 switch (_b.label) {
                     case 0: return [4 /*yield*/, ctx.createTemporaryDirectory()];
                     case 1:
                         workDir = _b.sent();
                         resultDir = (0, path_1.resolve)(workDir, 'result');
+                        ctx.logger.info(JSON.stringify(ctx.input.values));
+                        ecto = ctx.input.values.ecto;
                         flags = ['--no-install'];
-                        if (ctx.input.values.ecto === false) {
+                        if (ecto === false) {
                             ctx.logger.info("Running with no ecto");
                             flags.push('--no-ecto');
                         }
