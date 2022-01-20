@@ -5,7 +5,7 @@ import fs from 'fs-extra';
 import { resolve as resolvePath, join } from 'path';
 import { InputError } from '@backstage/errors';
 
-export function createNewFileAction({ containerRunner }: { containerRunner: ContainerRunner }) {
+export function createNewFileAction(containerRunner: ContainerRunner) {
     return createTemplateAction<{ projectName: string, values: JsonObject }>({
         id: 'elixir:create-phoenix-project',
         schema: {

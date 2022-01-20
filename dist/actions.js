@@ -53,8 +53,7 @@ var plugin_scaffolder_backend_1 = require("@backstage/plugin-scaffolder-backend"
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var path_1 = require("path");
 var errors_1 = require("@backstage/errors");
-function createNewFileAction(_a) {
-    var containerRunner = _a.containerRunner;
+function createNewFileAction(containerRunner) {
     return (0, plugin_scaffolder_backend_1.createTemplateAction)({
         id: 'elixir:create-phoenix-project',
         schema: {
