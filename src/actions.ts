@@ -127,9 +127,9 @@ export function createNewFileAction(containerRunner: ContainerRunner) {
 
         ctx.logger.info(`Running mix phx.new with flags ${JSON.stringify(flags)}`);
         await containerRunner.runContainer({
-            imageName: 'adalfovo/elixir-phoenix',
-            command: 'mix',
-            args: ['phx.new', ...flags, join('/result', ctx.input.projectName)],
+            imageName: 'public.ecr.aws/prima/elixir:1.13.0-1',
+            command: 'bash',
+            args: ['-c', `mix archive.install --force hex phx_new && mix phx.new ${flags.join(' ')} ${join('/result', ctx.input.projectName)}`],
             mountDirs: { [resultDir]: '/result' },
             logStream: ctx.logStream,
         });
