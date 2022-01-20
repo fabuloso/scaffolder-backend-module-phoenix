@@ -139,6 +139,7 @@ function createNewFileAction(containerRunner) {
                  mix phx.new ${flags.join(' ')} ${(0, path_1.join)('/result', ctx.input.projectName)}`
                 ],
                 mountDirs: { [resultDir]: '/result' },
+                workingDir: '/tmp',
                 logStream: ctx.logStream,
             });
             const targetPath = (_a = ctx.input.targetPath) !== null && _a !== void 0 ? _a : './';

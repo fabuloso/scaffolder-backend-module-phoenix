@@ -136,6 +136,7 @@ export function createNewFileAction(containerRunner: ContainerRunner) {
                  mix phx.new ${flags.join(' ')} ${join('/result', ctx.input.projectName)}`
             ],
             mountDirs: { [resultDir]: '/result' },
+            workingDir: '/tmp',
             logStream: ctx.logStream,
         });
 
