@@ -132,7 +132,12 @@ function createNewFileAction(containerRunner) {
             yield containerRunner.runContainer({
                 imageName: 'public.ecr.aws/prima/elixir:1.13.0-1',
                 command: 'bash',
-                args: ['-c', `mix archive.install --force hex phx_new && mix phx.new ${flags.join(' ')} ${(0, path_1.join)('/result', ctx.input.projectName)}`],
+                args: [
+                    '-c',
+                    `mix local.hex --force &&
+                 mix archive.install hex phx_new --force &&
+                 mix phx.new ${flags.join(' ')} ${(0, path_1.join)('/result', ctx.input.projectName)}`
+                ],
                 mountDirs: { [resultDir]: '/result' },
                 logStream: ctx.logStream,
             });
