@@ -177,6 +177,7 @@ function createNewFileAction(containerRunner) {
                     case 1:
                         workDir = _d.sent();
                         resultDir = (0, path_1.resolve)(workDir, 'result');
+                        fs_extra_1.default.ensureDir(resultDir);
                         ctx.logger.info("Running mix phx.new with flags ".concat(JSON.stringify(flags)));
                         return [4 /*yield*/, containerRunner.runContainer({
                                 imageName: 'adalfovo/elixir-phoenix',

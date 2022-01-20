@@ -123,6 +123,7 @@ export function createNewFileAction(containerRunner: ContainerRunner) {
 
         const workDir = await ctx.createTemporaryDirectory();
         const resultDir = resolvePath(workDir, 'result');
+        fs.ensureDir(resultDir);
 
         ctx.logger.info(`Running mix phx.new with flags ${JSON.stringify(flags)}`);
         await containerRunner.runContainer({
