@@ -1,9 +1,0 @@
-{
-    "compilerOptions": {
-      "target": "es6",
-      "module": "commonjs",
-      "esModuleInterop": true,
-      "outDir": "dist",
-      "types": ["node", "fs-extra"]
-    }
-}

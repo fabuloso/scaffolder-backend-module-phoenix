@@ -1,12 +1,10 @@
-import { createTemplateAction, runCommand } from '@backstage/plugin-scaffolder-backend';
-import { ContainerRunner } from '@backstage/backend-common';
-import { JsonObject } from '@backstage/types';
-import fs from 'fs-extra';
-import { resolve as resolvePath, join } from 'path';
-import { InputError } from '@backstage/errors';
+const { createTemplateAction } = require('@backstage/plugin-scaffolder-backend');
+const fs = require('fs-extra');
+const { resolve: resolvePath, join } = require('path');
+const { InputError } = require('@backstage/errors');
 
-export function createNewFileAction(containerRunner: ContainerRunner) {
-    return createTemplateAction<{ projectName: string, values: JsonObject }>({
+function createPhoenixProjectAction(containerRunner) {
+    return createTemplateAction({
         id: 'elixir:create-phoenix-project',
         schema: {
             input: {
@@ -78,7 +76,7 @@ export function createNewFileAction(containerRunner: ContainerRunner) {
         },
     });
 
-    async function createNewProject(ctx: any) {
+    async function createNewProject(ctx) {
         const {ecto, html, live, gettext, dashboard, mailer, database, umbrella, base_module} = ctx.input.values;
 
         let flags = ['--no-install'];
@@ -136,17 +134,19 @@ export function createNewFileAction(containerRunner: ContainerRunner) {
                  mix phx.new ${flags.join(' ')} ${join('/result', ctx.input.projectName)}`
             ],
             mountDirs: { [resultDir]: '/result' },
+            // The following is needed to make bash start in this folder, in order to avoid errors
+            // when trying to create files in /
             envVars: { HOME: '/tmp' },
             logStream: ctx.logStream,
         });
 
-        const targetPath = ctx.input.targetPath ?? './';
+        const targetPath = ctx.input.targetPath || './';
         const outputPath = resolvePath(ctx.workspacePath, targetPath);
         if (!outputPath.startsWith(ctx.workspacePath)) {
-            throw new InputError(
-                `Fetch action targetPath may not specify a path outside the working directory`,
-            );
+            throw new InputError('Fetch action targetPath may not specify a path outside the working directory');
         }
         await fs.copy(join(resultDir, ctx.input.projectName), outputPath);
     }
 };
+
+module.exports = { createPhoenixProjectAction };
