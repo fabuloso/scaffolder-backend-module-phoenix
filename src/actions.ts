@@ -1,10 +1,11 @@
 import { createTemplateAction, runCommand } from '@backstage/plugin-scaffolder-backend';
+import { ContainerRunner } from '@backstage/backend-common';
 import { JsonObject } from '@backstage/types';
 import fs from 'fs-extra';
 import { resolve as resolvePath, join } from 'path';
 import { InputError } from '@backstage/errors';
 
-export const createNewFileAction = () => {
+export function createNewFileAction({ containerRunner }: { containerRunner: ContainerRunner }) {
     return createTemplateAction<{ projectName: string, values: JsonObject }>({
         id: 'elixir:create-phoenix-project',
         schema: {
@@ -78,8 +79,6 @@ export const createNewFileAction = () => {
     });
 
     async function createNewProject(ctx: any) {
-        const workDir = await ctx.createTemporaryDirectory();
-        const resultDir = resolvePath(workDir, 'result');
         const {ecto, html, live, gettext, dashboard, mailer, database, umbrella, base_module} = ctx.input.values;
 
         let flags = ['--no-install'];
@@ -122,10 +121,15 @@ export const createNewFileAction = () => {
             flags.push('--no-umbrella');
         }
 
+        const workDir = await ctx.createTemporaryDirectory();
+        const resultDir = resolvePath(workDir, 'result');
+
         ctx.logger.info(`Running mix phx.new with flags ${JSON.stringify(flags)}`);
-        await runCommand({
+        await containerRunner.runContainer({
+            imageName: 'elixir-phoenix',
             command: 'mix',
-            args: ['phx.new', ...flags, join(resultDir, ctx.input.projectName)],
+            args: ['phx.new', ...flags, join('/result', ctx.input.projectName)],
+            mountDirs: { [resultDir]: '/result' },
             logStream: ctx.logStream,
         });
 

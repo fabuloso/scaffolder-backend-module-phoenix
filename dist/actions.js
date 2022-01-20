@@ -53,7 +53,8 @@ var plugin_scaffolder_backend_1 = require("@backstage/plugin-scaffolder-backend"
 var fs_extra_1 = __importDefault(require("fs-extra"));
 var path_1 = require("path");
 var errors_1 = require("@backstage/errors");
-var createNewFileAction = function () {
+function createNewFileAction(_a) {
+    var containerRunner = _a.containerRunner;
     return (0, plugin_scaffolder_backend_1.createTemplateAction)({
         id: 'elixir:create-phoenix-project',
         schema: {
@@ -137,13 +138,11 @@ var createNewFileAction = function () {
     function createNewProject(ctx) {
         var _a;
         return __awaiter(this, void 0, void 0, function () {
-            var workDir, resultDir, _b, ecto, html, live, gettext, dashboard, mailer, database, umbrella, base_module, flags, targetPath, outputPath;
-            return __generator(this, function (_c) {
-                switch (_c.label) {
-                    case 0: return [4 /*yield*/, ctx.createTemporaryDirectory()];
-                    case 1:
-                        workDir = _c.sent();
-                        resultDir = (0, path_1.resolve)(workDir, 'result');
+            var _b, ecto, html, live, gettext, dashboard, mailer, database, umbrella, base_module, flags, workDir, resultDir, targetPath, outputPath;
+            var _c;
+            return __generator(this, function (_d) {
+                switch (_d.label) {
+                    case 0:
                         _b = ctx.input.values, ecto = _b.ecto, html = _b.html, live = _b.live, gettext = _b.gettext, dashboard = _b.dashboard, mailer = _b.mailer, database = _b.database, umbrella = _b.umbrella, base_module = _b.base_module;
                         flags = ['--no-install'];
                         if (ecto === false) {
@@ -175,14 +174,20 @@ var createNewFileAction = function () {
                         if (umbrella) {
                             flags.push('--no-umbrella');
                         }
-                        ctx.logger.info("Running mix phx.new with flags " + JSON.stringify(flags));
-                        return [4 /*yield*/, (0, plugin_scaffolder_backend_1.runCommand)({
+                        return [4 /*yield*/, ctx.createTemporaryDirectory()];
+                    case 1:
+                        workDir = _d.sent();
+                        resultDir = (0, path_1.resolve)(workDir, 'result');
+                        ctx.logger.info("Running mix phx.new with flags ".concat(JSON.stringify(flags)));
+                        return [4 /*yield*/, containerRunner.runContainer({
+                                imageName: 'elixir-phoenix',
                                 command: 'mix',
-                                args: __spreadArray(__spreadArray(['phx.new'], flags, true), [(0, path_1.join)(resultDir, ctx.input.projectName)], false),
+                                args: __spreadArray(__spreadArray(['phx.new'], flags, true), [(0, path_1.join)('/result', ctx.input.projectName)], false),
+                                mountDirs: (_c = {}, _c[resultDir] = '/result', _c),
                                 logStream: ctx.logStream,
                             })];
                     case 2:
-                        _c.sent();
+                        _d.sent();
                         targetPath = (_a = ctx.input.targetPath) !== null && _a !== void 0 ? _a : './';
                         outputPath = (0, path_1.resolve)(ctx.workspacePath, targetPath);
                         if (!outputPath.startsWith(ctx.workspacePath)) {
@@ -190,11 +195,12 @@ var createNewFileAction = function () {
                         }
                         return [4 /*yield*/, fs_extra_1.default.copy((0, path_1.join)(resultDir, ctx.input.projectName), outputPath)];
                     case 3:
-                        _c.sent();
+                        _d.sent();
                         return [2 /*return*/];
                 }
             });
         });
     }
-};
+}
 exports.createNewFileAction = createNewFileAction;
+;
