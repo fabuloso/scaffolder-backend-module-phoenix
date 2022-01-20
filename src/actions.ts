@@ -126,7 +126,7 @@ export function createNewFileAction({ containerRunner }: { containerRunner: Cont
 
         ctx.logger.info(`Running mix phx.new with flags ${JSON.stringify(flags)}`);
         await containerRunner.runContainer({
-            imageName: 'elixir-phoenix',
+            imageName: 'adalfovo/elixir-phoenix',
             command: 'mix',
             args: ['phx.new', ...flags, join('/result', ctx.input.projectName)],
             mountDirs: { [resultDir]: '/result' },

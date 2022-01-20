@@ -180,7 +180,7 @@ function createNewFileAction(_a) {
                         resultDir = (0, path_1.resolve)(workDir, 'result');
                         ctx.logger.info("Running mix phx.new with flags ".concat(JSON.stringify(flags)));
                         return [4 /*yield*/, containerRunner.runContainer({
-                                imageName: 'elixir-phoenix',
+                                imageName: 'adalfovo/elixir-phoenix',
                                 command: 'mix',
                                 args: __spreadArray(__spreadArray(['phx.new'], flags, true), [(0, path_1.join)('/result', ctx.input.projectName)], false),
                                 mountDirs: (_c = {}, _c[resultDir] = '/result', _c),
