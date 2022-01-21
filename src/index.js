@@ -125,8 +125,8 @@ function createPhoenixProjectAction(containerRunner) {
 
         ctx.logger.info(`Running mix phx.new with flags ${JSON.stringify(flags)}`);
         await containerRunner.runContainer({
-            imageName: 'public.ecr.aws/prima/elixir:1.13.0-1',
-            command: 'bash',
+            imageName: 'elixir:1.13-alpine',
+            command: 'sh',
             args: [
                 '-c',
                 `mix local.hex --force &&
