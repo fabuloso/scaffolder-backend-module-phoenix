@@ -16,9 +16,9 @@ function createPhoenixProjectAction(containerRunner) {
                         title: 'Project Name',
                         description: 'Project Name',
                     },
-                    values: {
-                        title: 'Template values',
-                        description: 'Values to pass on to phoenix generator for scaffolding',
+                    generatorOptions: {
+                        title: 'Template generator options',
+                        description: 'Options passed to the Phoenix generator for the project scaffolding',
                         type: 'object',
                         properties: {
                             ecto: {
@@ -36,7 +36,7 @@ function createPhoenixProjectAction(containerRunner) {
                                 description: 'If false, comment out LiveView socket setup in assets/js/app.js and also on the endpoint (the latter also requires dashboard as false)',
                                 type: 'boolean'
                             },
-                            base_module: {
+                            baseModule: {
                                 title: 'Base Module',
                                 description: 'The name of the base module in the generated skeleton',
                                 type: 'string'
@@ -77,7 +77,7 @@ function createPhoenixProjectAction(containerRunner) {
     });
 
     async function createNewProject(ctx) {
-        const {ecto, html, live, gettext, dashboard, mailer, database, umbrella, base_module} = ctx.input.values;
+        const {ecto, html, live, gettext, dashboard, mailer, database, umbrella, baseModule} = ctx.input.generatorOptions;
 
         let flags = ['--no-install'];
 
@@ -110,9 +110,9 @@ function createPhoenixProjectAction(containerRunner) {
             flags.push(database)
         }
 
-        if (base_module != null) {
+        if (baseModule != null) {
             flags.push('--base_module')
-            flags.push(base_module)
+            flags.push(baseModule)
         }
 
         if (umbrella) {
