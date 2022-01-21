@@ -17,7 +17,7 @@ cd packages/backend
 yarn add git+https://github.com/fabuloso/scaffolder-backend-module-phoenix
 ```
 
-Configure the action (you can check the [docs](https://backstage.io/docs/features/software-templates/writing-custom-actions#registering-custom-actions) to see all options):
+Configure the action in `packages/backend/src/plugins/scaffolder.ts` file (you can check the [docs](https://backstage.io/docs/features/software-templates/writing-custom-actions#registering-custom-actions) to see all options):
 
 ```typescript
 import { createPhoenixProjectAction } from 'scaffolder-backend-module-phoenix';
