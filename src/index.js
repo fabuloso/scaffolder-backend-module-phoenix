@@ -130,7 +130,7 @@ function createPhoenixProjectAction(containerRunner) {
             args: [
                 '-c',
                 `mix local.hex --force &&
-                 mix archive.install hex phx_new --force &&
+                 mix archive.install hex phx_new "< 2.0.0" --force &&
                  mix phx.new ${flags.join(' ')} ${join('/result', ctx.input.projectName)}`
             ],
             mountDirs: { [resultDir]: '/result' },
