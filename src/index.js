@@ -111,7 +111,7 @@ function createPhoenixProjectAction(containerRunner) {
         }
 
         if (baseModule != null) {
-            flags.push('--base_module')
+            flags.push('--module')
             flags.push(baseModule)
         }
 
