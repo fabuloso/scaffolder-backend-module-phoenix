@@ -77,7 +77,7 @@ function createPhoenixProjectAction(containerRunner) {
     });
 
     async function createNewProject(ctx) {
-        const {ecto, html, live, gettext, dashboard, mailer, database, umbrella, baseModule} = ctx.input.generatorOptions;
+        const { ecto, html, live, gettext, dashboard, mailer, database, umbrella, baseModule } = ctx.input.generatorOptions;
 
         let flags = ['--no-install'];
 
@@ -116,7 +116,7 @@ function createPhoenixProjectAction(containerRunner) {
         }
 
         if (umbrella) {
-            flags.push('--no-umbrella');
+            flags.push('--umbrella');
         }
 
         const workDir = await ctx.createTemporaryDirectory();
@@ -145,7 +145,11 @@ function createPhoenixProjectAction(containerRunner) {
         if (!outputPath.startsWith(ctx.workspacePath)) {
             throw new InputError('Fetch action targetPath may not specify a path outside the working directory');
         }
-        await fs.copy(join(resultDir, ctx.input.projectName), outputPath);
+
+        let projectName = ctx.input.projectName;
+        if (umbrella) projectName += "_umbrella";
+
+        await fs.copy(join(resultDir, projectName), outputPath);
     }
 };
 
